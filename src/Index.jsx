@@ -15,6 +15,7 @@ import Collections from "./pages/Collections.jsx"
 export default class App extends Component{
     render(){
         return(
+            /**
             <Router basename="/">
                 <ul>
                     <li>
@@ -39,7 +40,8 @@ export default class App extends Component{
                         <Home />
                     </Route>
                 </Switch>
-            </Router>
+            </Router> */
+            <Home />
         )
     }
 }

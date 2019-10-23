@@ -1,0 +1,90 @@
+html, body{
+    text-rendering: optimizeLegibility;
+    margin: 0;
+    position: relative;
+    height: 100%;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    overflow-x: hidden;
+    padding: 0;
+}
+
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+html {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+}
+
+ul, h1, h2, h3, h4, h5, p{
+    margin: 0;
+    padding: 0;
+}
+  
+@-moz-document url-prefix() {
+    body {
+        font-weight: lighter !important;
+    }
+}
+
+a{
+    text-decoration: none;
+    align-items: center;
+}
+
+ul{
+    &::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: #f3f3f3;
+    }
+    &::-webkit-scrollbar
+    {
+        width: 6px;
+        background-color: #f3f3f3;
+    }
+    &::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: $yellow;
+    }
+}
+
+li{
+    list-style: none;
+}
+
+img{
+    object-fit: cover;
+    display: block;
+    width: 100%;
+}
+
+table {
+    border-spacing: 0px;
+    td{
+        padding-right: 15px;
+    }
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
