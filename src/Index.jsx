@@ -12,7 +12,18 @@ import Home from "./pages/Home.jsx"
 import Cuisines from "./pages/Cuisines.jsx"
 import Collections from "./pages/Collections.jsx"
 
-export default class App extends Component{
+// Import F7 Bundle
+import Framework7 from 'framework7/framework7-lite.esm.bundle.js';
+
+// Import F7-React Plugin
+import Framework7React from 'framework7-react';
+
+// Init F7-React Plugin
+Framework7.use(Framework7React);
+
+import {App} from 'framework7-react';
+
+export default class MyApp extends Component{
     render(){
         return(
             /**
@@ -41,10 +52,12 @@ export default class App extends Component{
                     </Route>
                 </Switch>
             </Router> */
-            <Home />
+            <App>
+                <Home />
+            </App>
         )
     }
 }
 
 const wrapper = document.getElementById('app');
-wrapper ? ReactDOM.render(<App />, wrapper) : false;
+wrapper ? ReactDOM.render(<MyApp />, wrapper) : false;

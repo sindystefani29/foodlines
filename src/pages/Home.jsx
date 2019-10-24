@@ -1,27 +1,18 @@
 import React, {Component} from "react";
 import axios from "axios";
-
-// Import F7 Bundle
-import Framework7 from 'framework7/framework7-lite.esm.bundle.js';
-
-// Import F7-React Plugin
-import Framework7React from 'framework7-react';
-
-// Init F7-React Plugin
-Framework7.use(Framework7React);
-
-import {App, Swiper, SwiperSlide} from 'framework7-react';
-    
+import SwiperComponent from "../components/SwiperComponent.jsx" 
 
 export default class Home extends Component{
     constructor() {
         super();
 
         this.state = {
-            collections: []
+            latitude: '',
+            longitude: '',
+            collections: [],
+            currentLocation: '',
+            nearRestaurants: []
         }
-
-        this.swiperRef = React.createRef()
     }
 
     render(){
@@ -30,22 +21,26 @@ export default class Home extends Component{
                 <div className="home--left">
                         <h2>Tired of Waiting for Your Meal?</h2>
                         <p>Mealwise lets you get the food by the best chefs without waiting. Eat what you love and save your time for something cool!</p>
-                        <button><a className="button">Find the restaurant</a></button>
+                        <button className="button button--orange button__radius"><a>Find the restaurant</a></button>
+                        <div>
+                            <h4>Best Restaurants Near {this.state.currentLocation} :</h4>
+                            <SwiperComponent layout="nearRestaurant" content={this.state.nearRestaurants} slides="auto" />
+                        </div>
                 </div>
                 <div className="home--right">
-                    <App>
-                        <Swiper ref={this.swiperRef} params={{slidesPerView: 'auto', spaceBetween: 20}}>
-                            {this.state.collections.map(item => (
-                                <SwiperSlide key={item.collection.collection_id}>{item.collection.title}</SwiperSlide>
-                            ))}
-                        </Swiper>
-                    </App>
+                    <SwiperComponent layout="collections" content={this.state.collections} slides="auto" />
                 </div>
             </main>
         )
     }
 
     componentDidMount(){
+        this.getCollections()
+        this.getLocation()
+
+    }
+
+    getCollections(){
         axios.get("https://developers.zomato.com/api/v2.1/collections?city_id=74&count=5", {headers: {'user-key': 'b35aa1fe430b85914c5cf03369d365f3'}})
         .then(res => {
             const collections = res.data.collections
@@ -53,12 +48,34 @@ export default class Home extends Component{
                 return { collections }
             })
         })
+    }
 
-        this.$f7ready((f7) => {
-            const swiper = this.swiperRef.current.swiper
-            setTimeout(() => {
-                swiper.update()
-            }, 500);
-        });
+    getNearRestaurants(){
+        axios.get(`https://developers.zomato.com/api/v2.1/geocode?lat=${this.state.latitude}&lon=${this.state.longitude}`, {headers: {'user-key': 'b35aa1fe430b85914c5cf03369d365f3'}})
+        .then(res => {
+            const currentLocation = res.data.location.title
+            const nearRestaurants = res.data.nearby_restaurants
+            this.setState(() => {
+                return { currentLocation, nearRestaurants }
+            })
+        })
+    }
+
+    getLocation(){
+        const success = (position) => {
+            const latitude = position.coords.latitude
+            const longitude = position.coords.longitude
+            this.setState(() => {
+                return { latitude, longitude}
+            })
+            console.log(this.state.latitude, this.state.longitude)
+            this.getNearRestaurants()
+        }
+        const error = () => {
+            console.log('location not found')
+        }
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(success, error)
+        }
     }
 }
