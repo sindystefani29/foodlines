@@ -2,8 +2,15 @@ import React, {Component} from "react";
 import axios from "axios";
 import SwiperComponent from "../components/SwiperComponent.jsx" 
 import {Preloader} from 'framework7-react';
+import { connect } from "react-redux";
 
-export default class Home extends Component{
+const mapStateToProps = (state) => {
+    return{ 
+        articles : state.articles
+     }
+}
+
+class Home extends Component{
     constructor() {
         super();
 
@@ -20,7 +27,7 @@ export default class Home extends Component{
         return(
             <main className="home">
                 <div className="home--left">
-                        <h2>Tired of Waiting for Your Meal?</h2>
+                        <h2>Tired of Waiting for Your Meal?{this.props.articles}</h2>
                         <p>Mealwise lets you get the food by the best chefs without waiting. Eat what you love and save your time for something cool!</p>
                         <button className="button button--orange button__radius"><a>Find the restaurant</a></button>
                         <div>
@@ -86,3 +93,7 @@ export default class Home extends Component{
         }
     }
 }
+
+const List = connect(mapStateToProps)(Home)
+
+export default List

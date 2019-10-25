@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import store from "./store/index.js"
 import {
     HashRouter as Router,
     Switch,
@@ -52,9 +54,11 @@ export default class MyApp extends Component{
                     </Route>
                 </Switch>
             </Router> */
-            <App>
-                <Home />
-            </App>
+            <Provider store={store}>
+                <App>
+                    <Home />
+                </App>
+            </Provider>
         )
     }
 }
