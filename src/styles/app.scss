@@ -2,8 +2,11 @@
     '1-base/_variables',
     '1-base/_fonts',
     '1-base/_reset',
-    '1-base/_button',
-    '1-base/_swiper';
+    '1-base/_button';
 
 @import
     '2-page/_home';
+
+@import
+    '3-components/_preloader',
+    '3-components/_swiper';

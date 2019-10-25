@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import SwiperComponent from "../components/SwiperComponent.jsx" 
+import {Preloader} from 'framework7-react';
 
 export default class Home extends Component{
     constructor() {
@@ -23,7 +24,7 @@ export default class Home extends Component{
                         <p>Mealwise lets you get the food by the best chefs without waiting. Eat what you love and save your time for something cool!</p>
                         <button className="button button--orange button__radius"><a>Find the restaurant</a></button>
                         <div>
-                            <h4>Best Restaurants Near {this.state.currentLocation} :</h4>
+                            <h4>Best Restaurants Near <Preloader id='loader'></Preloader> {this.state.currentLocation} :</h4>
                             <SwiperComponent layout="nearRestaurant" content={this.state.nearRestaurants} slides="auto" />
                         </div>
                 </div>
@@ -58,6 +59,7 @@ export default class Home extends Component{
             this.setState(() => {
                 return { currentLocation, nearRestaurants }
             })
+            document.getElementById('loader').remove()
         })
     }
 
@@ -68,7 +70,6 @@ export default class Home extends Component{
             this.setState(() => {
                 return { latitude, longitude}
             })
-            console.log(this.state.latitude, this.state.longitude)
             this.getNearRestaurants()
         }
         const error = () => {
@@ -76,6 +77,12 @@ export default class Home extends Component{
         }
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(success, error)
+        }else{
+            const latitude = -6.1847292
+            const longitude = 106.8316936
+            this.setState(() => {
+                return { latitude, longitude}
+            })
         }
     }
 }
