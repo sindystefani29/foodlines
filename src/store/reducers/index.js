@@ -1,14 +1,13 @@
 const initialState = {
-    articles: 'coba'
+    favorites: ['coba']
 }
 
 function rootReducers(state = initialState, action) {
-    /*
-    if(action.type == 'ADD_ARTICLES'){
+    if(action.type == 'ADD_FAVORITES'){
         return Object.assign({}, state, {
-            articles: state.articles.concat(action.payload)
+            articles: state.favorites.push(action.payload)
         })
-    }*/
+    }
     return state
 }
 

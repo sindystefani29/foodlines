@@ -1,3 +1,3 @@
-export function addArticles(payload) {
-    return { type: 'ADD_ARTICLES', payload }
+export function addFavorites(payload) {
+    return { type: 'ADD_FAVORITES', payload }
 }

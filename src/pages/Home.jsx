@@ -3,33 +3,52 @@ import axios from "axios";
 import SwiperComponent from "../components/SwiperComponent.jsx" 
 import {Preloader} from 'framework7-react';
 import { connect } from "react-redux";
+import { addFavorites } from "../store/actions/index.js"
 
 const mapStateToProps = (state) => {
     return{ 
-        articles : state.articles
+        favorites : state.favorites
+     }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return{ 
+        dispatchFavorites : favorites => { dispatch(addFavorites(favorites)) }
      }
 }
 
 class Home extends Component{
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             latitude: '',
             longitude: '',
             collections: [],
             currentLocation: '',
-            nearRestaurants: []
+            nearRestaurants: [],
+            setFavorites: props.favorites
         }
+    }
+
+    doAddFavorites(){
+        this.props.dispatchFavorites('lagi')
+        console.log(this.props.favorites)
+        this.setState({
+            favorites: this.props.favorites
+        })
     }
 
     render(){
         return(
             <main className="home">
                 <div className="home--left">
-                        <h2>Tired of Waiting for Your Meal?{this.props.articles}</h2>
+                        <h2>Tired of Waiting for Your Meal?</h2>
+                        {this.state.setFavorites.map(item => (
+                            <p>{item}</p>
+                        ))}
                         <p>Mealwise lets you get the food by the best chefs without waiting. Eat what you love and save your time for something cool!</p>
-                        <button className="button button--orange button__radius"><a>Find the restaurant</a></button>
+                        <button onClick={this.doAddFavorites.bind(this)} className="button button--orange button__radius"><a>Find the restaurant</a></button>
                         <div>
                             <h4>Best Restaurants Near <Preloader id='loader'></Preloader> {this.state.currentLocation} :</h4>
                             <SwiperComponent layout="nearRestaurant" content={this.state.nearRestaurants} slides="auto" />
@@ -45,7 +64,6 @@ class Home extends Component{
     componentDidMount(){
         this.getCollections()
         this.getLocation()
-
     }
 
     getCollections(){
@@ -94,6 +112,5 @@ class Home extends Component{
     }
 }
 
-const List = connect(mapStateToProps)(Home)
-
+let List = connect(mapStateToProps, mapDispatchToProps, null)(Home)
 export default List
